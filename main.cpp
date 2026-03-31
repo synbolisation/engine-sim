@@ -18,6 +18,11 @@ double calculateDisplacement(double bore, double stroke) { // Calculates displac
     return displacement;
 }
 
+double totalDisplacement(double bore, double stroke, int cylinders) {
+    return calculateDisplacement(bore,stroke) * cylinders;
+}
+
+
 int main() {
     EngineConfig car1;
     car1.cylinders = 4;
@@ -28,7 +33,7 @@ int main() {
     car1.idle = 800;
 
     car1.displacement = calculateDisplacement(car1.bore, car1.stroke);
-    car1.totaldisplacement = car1.cylinders * car1.displacement;
+    car1.totaldisplacement = totalDisplacement(car1.bore, car1.stroke, car1.cylinders);
 
     std::cout << "==== Engine Configuration ====" << std::endl;
     std::cout << "Cylinders: " << car1.cylinders << std::endl;
@@ -39,5 +44,4 @@ int main() {
     std::cout << "Idle RPM: " << car1.idle << std::endl;
     std::cout << "Displacement per Cylinder: " << car1.displacement << "cc" << std::endl;
     std::cout << "Total Displacement: " << car1.totaldisplacement << "cc" << std::endl;
-
 }
