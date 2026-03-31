@@ -1,6 +1,38 @@
 #include <iostream>
+#include <cmath>
+
+struct EngineConfig {
+    int cylinders; // Number of Cylinders expressed as whole in
+    double bore; // Size of Bore, represented in millimetres
+    double stroke; // Size of Stroke, represented in millimetres
+    double compratio; // Compression Ratio, represented as decimal. E.g 10.5 = 10.5:1
+    int redline; // Redline RPM represented by a whole int
+    int idle; // Idle RPM expressed as whole int
+    double displacement; // Engine size calculated to decimal Number
+    double totaldisplacement;
+};
 
 int main() {
-    std::cout << "Engine Simulation Starting..." << std::endl;
-    return 0;
+    EngineConfig car1;
+    car1.cylinders = 4;
+    car1.bore = 86;
+    car1.stroke = 86;
+    car1.compratio = 10.5;
+    car1.redline = 7000;
+    car1.idle = 800;
+
+    car1.displacement = M_PI * std::pow(((car1.bore / 1000.0) / 2),2) * (car1.stroke / 1000.0);
+    car1.displacement = car1.displacement * 1000000;
+    car1.totaldisplacement = car1.cylinders * car1.displacement;
+
+    std::cout << "==== Engine Configuration ====" << std::endl;
+    std::cout << "Cylinders: " << car1.cylinders << std::endl;
+    std::cout << "Bore: " << car1.bore << "mm" << std::endl;
+    std::cout << "Stroke: " << car1.stroke << "mm" << std::endl;
+    std::cout << "Compression Ratio: " << car1.compratio << ":1" << std::endl;
+    std::cout << "Redline RPM: " << car1.redline << std::endl;
+    std::cout << "Idle RPM: " << car1.idle << std::endl;
+    std::cout << "Displacement per Cylinder: " << car1.displacement << "cc" << std::endl;
+    std::cout << "Total Displacement: " << car1.totaldisplacement << "cc" << std::endl;
+
 }
