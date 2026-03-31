@@ -12,6 +12,12 @@ struct EngineConfig {
     double totaldisplacement;
 };
 
+double calculateDisplacement(double bore, double stroke) { // Calculates displacement for each cylinder. Uses equation: PI * (bore/1000)^2 * stroke
+    double displacement = M_PI * std::pow(((bore / 1000.0) / 2),2) * (stroke / 1000.0);
+    displacement = displacement * 1000000;
+    return displacement;
+}
+
 int main() {
     EngineConfig car1;
     car1.cylinders = 4;
@@ -21,8 +27,7 @@ int main() {
     car1.redline = 7000;
     car1.idle = 800;
 
-    car1.displacement = M_PI * std::pow(((car1.bore / 1000.0) / 2),2) * (car1.stroke / 1000.0);
-    car1.displacement = car1.displacement * 1000000;
+    car1.displacement = calculateDisplacement(car1.bore, car1.stroke);
     car1.totaldisplacement = car1.cylinders * car1.displacement;
 
     std::cout << "==== Engine Configuration ====" << std::endl;
