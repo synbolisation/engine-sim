@@ -10,6 +10,8 @@ struct EngineConfig {
     int idle; // Idle RPM expressed as whole int
     double displacement; // Engine size calculated to decimal Number
     double totaldisplacement;
+    double thermalefficiency;
+    double horsepower;
 };
 
 double calculateDisplacement(double bore, double stroke) { // Calculates displacement for each cylinder. Uses equation: PI * (bore/1000)^2 * stroke
@@ -22,6 +24,36 @@ double totalDisplacement(double bore, double stroke, int cylinders) {
     return calculateDisplacement(bore,stroke) * cylinders;
 }
 
+double calculateThermalEfficiency(double compratio, double gamma = 1.4) {
+    return 1 - (1.0 / std::pow(compratio,gamma - 1.0));
+}
+
+double calculateHorsepower(double totaldisplacement, double compratio, int RPM, int cylinders, double gamma = 1.4) {
+    double airVolume = totaldisplacement / 1000000.0;
+    double airDensity = 1.225;
+    double airMass = airVolume * airDensity;
+    std::cout << airMass << std::endl;
+    double airfuelratio = 14.7;
+    double fuelMass = airMass / airfuelratio;
+    std::cout << fuelMass << std::endl;
+    double calorificValue = 44000000.0;
+    double fuelEnergy = fuelMass * calorificValue;
+    std::cout << fuelEnergy << std::endl;
+    double usefulWork = fuelEnergy * calculateThermalEfficiency(compratio, gamma);
+    std::cout << usefulWork << std::endl;
+
+
+    double cyclesPerSecond = (RPM / 2) / 60.0;
+    std::cout << cyclesPerSecond << std::endl;
+    double wattPower = usefulWork * cyclesPerSecond;
+    std::cout << wattPower << std::endl;
+    double horsepower = wattPower / 745.7;
+    std::cout << horsepower << std::endl;
+
+    return horsepower;
+
+}
+
 
 int main() {
     EngineConfig car1;
@@ -31,9 +63,13 @@ int main() {
     car1.compratio = 10.5;
     car1.redline = 7000;
     car1.idle = 800;
+    car1.thermalefficiency = calculateThermalEfficiency(car1.compratio);
 
     car1.displacement = calculateDisplacement(car1.bore, car1.stroke);
     car1.totaldisplacement = totalDisplacement(car1.bore, car1.stroke, car1.cylinders);
+    car1.horsepower = calculateHorsepower(car1.totaldisplacement, car1.compratio, car1.redline, car1.cylinders);
+
+
 
     std::cout << "==== Engine Configuration ====" << std::endl;
     std::cout << "Cylinders: " << car1.cylinders << std::endl;
@@ -44,4 +80,7 @@ int main() {
     std::cout << "Idle RPM: " << car1.idle << std::endl;
     std::cout << "Displacement per Cylinder: " << car1.displacement << "cc" << std::endl;
     std::cout << "Total Displacement: " << car1.totaldisplacement << "cc" << std::endl;
+
+    std::cout << car1.thermalefficiency << std::endl;
+    std::cout << car1.horsepower << "hp" << std::endl;
 }
