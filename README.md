@@ -1,1 +1,2 @@
 # engine-sim
+A physics-based internal combustion engine simulator written in C++. Models the thermodynamic and mechanical behaviour of real 4-stroke engines using first-principles equations - including adiabatic compression, the Otto cycle, air/fuel mixture dynamics, and thermal efficiency. Calculates displacement, peak horsepower, and torque from real engine parameters. Designed to grow into a full interactive simulator with real-time throttle response, synthesised combustion audio, and a tuner mode for virtual engine building and optimisation.
